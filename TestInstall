@@ -6,8 +6,6 @@ autoinstall:
   source:
     id: ubuntu-minimal-desktop
   locale: "de_CH.utf8"
-  refresh-installer:
-    update: true
   keyboard:
     layout: ch
   storage:
