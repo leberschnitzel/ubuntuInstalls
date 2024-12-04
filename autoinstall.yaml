@@ -1,43 +1,90 @@
-autoinstall:
-  version: 1
-  interactive-sections:
-    - network
-    - identity
-  source:
-    id: ubuntu-minimal-desktop
-  locale: "de_CH.utf8"
-  keyboard:
-    layout: ch
-  storage:
-    layout:
-      name: lvm
-      sizing-policy: all
-      reset-partition: true
-  codecs:
-    install: true
-  drivers:
-    install: true
+# This is an autoinstall.yaml file for Ubuntu
+# It will install a minimal desktop environment and a set of applications, including Firefox, Thunderbird, LibreOffice, and others
+# It also sets the locale to Switzerland (Swiss German)
+
+# Specify Ubuntu version for autoinstallation
+system:
+  # Set the system user details
+  user:
+    name: ubuntu
+    shell: /bin/bash
+    groups:
+      - sudo
+
+# Keyboard layout and Locale settings for Switzerland (Swiss German)
+locale:
+  language: de_CH
+  region: CH
   timezone: Europe/Zurich
-  updates: all
-  shutdown: reboot
-  packages:
-    - firefox
-    - firefox-locale-de
-    - firefox-locale-fr
-    - firefox-locale-it
-    - firefox-locale-en
-    - thunderbird
-    - thunderbird-locale-fr
-    - thunderbird-locale-it
-    - thunderbird-locale-de
-    - thunderbird-locale-en
-    - libreoffice
-    - flameshot
-    - vlc
-    - gimp
-    - krita
-    - scribus
-    - inkscape
-    - rawtherapee
-    - keepassxc
-    - gnome-menus
+  keyboard: ch
+
+# Package installation section
+packages:
+  # Install the minimal desktop environment
+  - ubuntu-desktop-minimal  # Minimal Ubuntu desktop environment
+  - firefox
+  - firefox-locale-de
+  - firefox-locale-fr
+  - firefox-locale-it
+  - firefox-locale-en
+  - thunderbird
+  - thunderbird-locale-fr
+  - thunderbird-locale-it
+  - thunderbird-locale-de
+  - thunderbird-locale-en
+  - libreoffice
+  - flameshot
+  - vlc
+  - gimp
+  - krita
+  - scribus
+  - inkscape
+  - manuscript
+  - rawtherapee
+  - keepassxc
+  - gnome-menus
+  # Additional dependencies for installing Element and OpenProject
+  - wget
+  - apt-transport-https
+  - ca-certificates
+  - npm  # For Joplin installation (if using npm method)
+
+# Repositories for Element and OpenProject
+apt:
+  sources:
+    - deb http://archive.ubuntu.com/ubuntu/ focal main universe
+    - deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main
+    - deb https://download.jitsi.org stable/$(lsb_release -c | awk '{print $2}') main
+    - deb https://dl.packager.io/srv/opf/openproject/stable/15/installer/ubuntu/22.04.repo
+
+  # Element key for Element repo
+  keys:
+    - https://packages.element.io/debian/element-io-archive-keyring.gpg
+    - https://download.jitsi.org/jitsi-key.gpg.key
+    - https://dl.packager.io/srv/opf/openproject/key
+
+# Scripts to run post-installation
+
+# Post-installation configuration
+early-commands:
+  # Add Element and OpenProject repositories and keys
+  - echo "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main" | tee /etc/apt/sources.list.d/element-io.list
+  - wget -O /usr/share/keyrings/element-io-archive-keyring.gpg https://packages.element.io/debian/element-io-archive-keyring.gpg
+  - wget -O /etc/apt/trusted.gpg.d/openproject.asc https://dl.packager.io/srv/opf/openproject/key
+  - wget -O /etc/apt/sources.list.d/openproject.list https://dl.packager.io/srv/opf/openproject/stable/15/installer/ubuntu/22.04.repo
+
+# Update apt packages after setting up repositories
+  - apt update
+
+# Install Element, OpenProject, Jitsi, and Joplin after repository setup
+  - apt install -y element-desktop
+  - apt install -y openproject
+  - apt install -y jitsi-meet
+  - apt install -y joplin
+
+  # Optionally: Install npm packages for Joplin if needed
+  - npm install -g joplin
+
+# Final cleanup
+  - apt autoremove -y
+  - apt clean
