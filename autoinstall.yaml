@@ -12,6 +12,7 @@ autoinstall:
     layout:
       name: lvm
       sizing-policy: all
+      reset-partition: true
   codecs:
     install: true
   drivers:
@@ -37,7 +38,11 @@ autoinstall:
     - krita
     - scribus
     - inkscape
-    - manuscript
     - rawtherapee
     - keepassxc
     - gnome-menus
+    # Consider adding ubuntu-restricted-extras if you need essential multimedia codecs and fonts
+    - ubuntu-restricted-extras
+    # Optionally add any additional useful software (like a specific desktop environment or utilities)
+    # - xfce4
+    # - gparted
