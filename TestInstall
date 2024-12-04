@@ -1,0 +1,46 @@
+autoinstall:
+  version: 1
+  interactive-sections:
+    - network
+    - identity
+  source:
+    id: ubuntu-minimal-desktop
+  locale: "de_CH.utf8"
+  refresh-installer:
+    update: true
+  keyboard:
+    layout: ch
+  storage:
+    layout:
+      name: lvm
+      sizing-policy: all
+      reset-partition: true
+  codecs:
+    install: true
+  drivers:
+    install: true
+  timezone: Europe/Zurich
+  updates: all
+  shutdown: reboot
+  packages:
+    - firefox
+    - firefox-locale-de
+    - firefox-locale-fr
+    - firefox-locale-it
+    - firefox-locale-en
+    - thunderbird
+    - thunderbird-locale-fr
+    - thunderbird-locale-it
+    - thunderbird-locale-de
+    - thunderbird-locale-en
+    - libreoffice
+    - flameshot
+    - vlc
+    - gimp
+    - krita
+    - scribus
+    - inkscape
+    - manuscript
+    - rawtherapee
+    - keepassxc
+    - gnome-menus
