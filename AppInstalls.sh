@@ -18,7 +18,7 @@ echo "Installing common packages..."
 sudo apt install -y firefox firefox-locale-de firefox-locale-fr firefox-locale-it firefox-locale-en \
 thunderbird thunderbird-locale-fr thunderbird-locale-it thunderbird-locale-de thunderbird-locale-en \
 libreoffice flameshot vlc gimp krita scribus inkscape manuskript rawtherapee keepassxc gnome-menus \
-element-desktop openproject npm
+element-desktop openproject npm nextcloud-desktop
 
 # Install Joplin (Desktop App)
 echo "Installing Joplin..."
