@@ -1,0 +1,18 @@
+apt install -y xrdp
+adduser xrdp ssl-cert
+ufw allow 3389
+mkdir -p /etc/polkit-1/localauthority/50-local.d
+cat >/etc/polkit-1/localauthority/50-local.d/47-allow-networkd.pkla <<EOF
+[Allow Network Control all Users]
+Identity=unix-user:*
+Action=org.freedesktop.NetworkManager.network-control
+ResultAny=no
+ResultInactive=no
+ResultActive=yes
+
+
+
+apt install -y linux-tools-virtual
+cp /etc/xrdp/xrdp.ini /etc/xrdp/xrdp.ini.orig
+sed -i 's/^port=3389$/port=vsock:\/\/-1:3389/' /etc/xrdp/xrdp.ini
+sed -i 's/^security_layer=negotiate$/security_layer=rdp/' /etc/xrdp/xrdp.ini
